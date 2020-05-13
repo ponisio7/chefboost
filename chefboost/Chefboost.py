@@ -18,7 +18,7 @@ from chefboost.tuning import gbm, adaboost, randomforest
 #------------------------
 
 def fit(df, config):
-	
+	print("Entro")
 	target_label = df.columns[len(df.columns)-1]
 	if target_label != 'Decision':
 		print("Expected: Decision, Existing: ",target_label)
@@ -30,6 +30,7 @@ def fit(df, config):
 	nan_values = []
 	
 	for column in df.columns:
+		print(df[column].dtypes)
 		if df[column].dtypes != 'object':
 			min_value = df[column].min()
 			idx = df[df[column].isna()].index
@@ -41,12 +42,12 @@ def fit(df, config):
 				df.loc[idx, column] = min_value - 1
 				nan_value.append(min_value - 1)
 				min_value - 1
-				#print("NaN values are replaced to ", min_value - 1, " in column ", column)
+				print("NaN values are replaced to ", min_value - 1, " in column ", column)
 			else:
 				nan_value.append(None)
 			
 			nan_values.append(nan_value)
-	
+	df.to_csv('archivo.csv', index=False)	
 	#------------------------
 	
 	#initialize params and folders
