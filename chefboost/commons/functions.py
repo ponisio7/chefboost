@@ -1,12 +1,12 @@
 import numpy as np
 import pathlib
-import imp
+import importlib
 import os
 from os import path
 
 def restoreTree(moduleName):
-   fp, pathname, description = imp.find_module(moduleName)
-   return imp.load_module(moduleName, fp, pathname, description)
+   fp, pathname, description =  importlib.find_module(moduleName)
+   return importlib.load_module(moduleName, fp, pathname, description)
 
 def softmax(w):
 	e = np.exp(np.array(w, dtype=np.float32))
@@ -71,7 +71,7 @@ def initializeParams(config):
 	enableGBM = False; epochs = 10; learning_rate = 1
 	enableAdaboost = False; num_of_weak_classifier = 4
 	enableParallelism = False
-	
+	#Asigna la configuracion
 	for key, value in config.items():
 		if key == 'algorithm':
 			algorithm = value

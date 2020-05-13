@@ -2,7 +2,7 @@ import pandas as pd
 import math
 import numpy as np
 import time
-import imp
+import importlib
 import pickle
 import os
 from os import path
@@ -26,28 +26,28 @@ def fit(df, config):
 	
 	#------------------------
 	#handle NaN values
-	
+	begin = time.time()
 	nan_values = []
 	
 	for column in df.columns:
 		print(df[column].dtypes)
 		if df[column].dtypes != 'object':
-			min_value = df[column].min()
+			min_value = df[column].mode()
 			idx = df[df[column].isna()].index
 			
 			nan_value = []
 			nan_value.append(column)
 			
 			if idx.shape[0] > 0:
-				df.loc[idx, column] = min_value - 1
-				nan_value.append(min_value - 1)
-				min_value - 1
-				print("NaN values are replaced to ", min_value - 1, " in column ", column)
+				df.loc[idx, column] = min_value
+				nan_value.append(min_value)
+				
+				#print("NaN values are replaced to ", min_value, " in column ", column)
 			else:
 				nan_value.append(None)
 			
 			nan_values.append(nan_value)
-	df.to_csv('archivo.csv', index=False)	
+	df.to_csv('/home/multipodo/Escritorio/cheef/archivo.csv', index=False)	
 	#------------------------
 	
 	#initialize params and folders
@@ -131,7 +131,7 @@ def fit(df, config):
 		
 	#------------------------
 	
-	begin = time.time()
+	
 	
 	trees = []; alphas = []
 
@@ -331,3 +331,4 @@ def feature_importance():
 	else:
 		print("Feature importance calculation is enabled when parallelised fitting. It seems that fit function didn't called parallelised. No file found like outputs/rules/rules_fi.csv")
 		return None
+

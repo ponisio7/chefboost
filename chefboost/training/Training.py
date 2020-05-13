@@ -1,5 +1,5 @@
 import math
-import imp
+import importlib
 import uuid
 import json
 import numpy as np
@@ -473,8 +473,8 @@ def buildDecisionTree(df, root, file, config, dataset_features, parent_level = 0
 		#this is reguler decision tree. find accuracy here.
 			
 			moduleName = "outputs/rules/rules"
-			fp, pathname, description = imp.find_module(moduleName)
-			myrules = imp.load_module(moduleName, fp, pathname, description) #rules0
+			fp, pathname, description = importlib.find_module(moduleName)
+			myrules = importlib.load_module(moduleName, fp, pathname, description) #rules0
 			models.append(myrules)
 			
 			num_of_features = df.shape[1] - 1
@@ -521,8 +521,8 @@ def findPrediction(row):
 		params.append(row[j])
 	
 	moduleName = "outputs/rules/rules"
-	fp, pathname, description = imp.find_module(moduleName)
-	myrules = imp.load_module(moduleName, fp, pathname, description) #rules0
+	fp, pathname, description = importlib.find_module(moduleName)
+	myrules = importlib.load_module(moduleName, fp, pathname, description) #rules0
 	
 	prediction = myrules.findDecision(params)
 	return prediction
