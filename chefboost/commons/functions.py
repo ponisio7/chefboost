@@ -1,12 +1,12 @@
 import numpy as np
 import pathlib
-import importlib
+import imp
 import os
 from os import path
 
 def restoreTree(moduleName):
-   fp, pathname, description =  importlib.find_module(moduleName)
-   return importlib.load_module(moduleName, fp, pathname, description)
+   fp, pathname, description =  imp.find_module(moduleName)
+   return imp.load_module(moduleName, fp, pathname, description)
 
 def softmax(w):
 	e = np.exp(np.array(w, dtype=np.float32))

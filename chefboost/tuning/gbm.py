@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-import importlib
+import imp
 
 from chefboost.commons import functions
 from chefboost.training import Preprocess, Training
@@ -18,8 +18,8 @@ def findPrediction(row):
 		params.append(row[j])
 		
 	moduleName = "outputs/rules/rules%s" % (epoch-1)
-	fp, pathname, description = importlib.find_module(moduleName)
-	myrules = importlib.load_module(moduleName, fp, pathname, description)
+	fp, pathname, description = imp.find_module(moduleName)
+	myrules = imp.load_module(moduleName, fp, pathname, description)
 	
 	prediction = int(myrules.findDecision(params)) 
 	
@@ -80,8 +80,8 @@ def regressor(df, config, header, dataset_features):
 		
 		#dynamic import
 		moduleName = "outputs/rules/rules%s" % (index-1)
-		fp, pathname, description = importlib.find_module(moduleName)
-		myrules = importlib.load_module(moduleName, fp, pathname, description) #rules0
+		fp, pathname, description = imp.find_module(moduleName)
+		myrules = imp.load_module(moduleName, fp, pathname, description) #rules0
 		
 		models.append(myrules)
 		
@@ -204,8 +204,8 @@ def classifier(df, config, header, dataset_features):
 			
 			#dynamic import
 			moduleName = "outputs/rules/rules-for-"+current_class+"-round-"+str(epoch)
-			fp, pathname, description = importlib.find_module(moduleName)
-			myrules = importlib.load_module(moduleName, fp, pathname, description) #rules0
+			fp, pathname, description = imp.find_module(moduleName)
+			myrules = imp.load_module(moduleName, fp, pathname, description) #rules0
 			
 			models.append(myrules)
 			

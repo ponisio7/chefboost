@@ -2,7 +2,7 @@ import pandas as pd
 import math
 import numpy as np
 import time
-import importlib
+import imp
 import pickle
 import os
 from os import path
@@ -29,25 +29,36 @@ def fit(df, config):
 	begin = time.time()
 	nan_values = []
 	
+	dfisna = df.isna()
 	for column in df.columns:
-		print(df[column].dtypes)
-		if df[column].dtypes != 'object':
-			min_value = df[column].mode()
-			idx = df[df[column].isna()].index
-			
-			nan_value = []
-			nan_value.append(column)
-			
-			if idx.shape[0] > 0:
-				df.loc[idx, column] = min_value
-				nan_value.append(min_value)
+			#print(df[column].dtypes)
+			if df[column].dtypes != 'object':
+				df1 = df.groupby(df['Decision']).mean()
+				idx = df[df[column].isna()].index
+				if(idx>0):
+					for c in range(len(df.columns)-1):
+						if(dfisna.iloc[int(idx[0]),c]):
+							#print(idx[0],c)
+							mean = df1[df.columns[c]][df.loc[idx[0], df.columns[len(df.columns)-1]]]
+							df.iloc[idx[0], c] = round(mean,2)
+				nan_value = []
+				nan_value.append(column)
+				if idx.shape[0] > 0:
+					nan_value.append(mean)
+					#print("NaN values are replaced to ", min_value, " in column ", column)
+				else:
+					nan_value.append(None)
 				
-				#print("NaN values are replaced to ", min_value, " in column ", column)
-			else:
-				nan_value.append(None)
-			
-			nan_values.append(nan_value)
-	df.to_csv('/home/multipodo/Escritorio/cheef/archivo.csv', index=False)	
+				nan_values.append(nan_value)
+			if df[column].dtypes == 'object':
+				df2 = df.mode()
+				idx = df[df[column].isna()].index
+				if(idx>0):
+					for c in range(len(df.columns)-1):
+						if(dfisna.iloc[int(idx[0]),c]):
+							mode = df2[df.columns[c]][0]
+							df.iloc[idx[0], c] = mode
+	#df.to_csv('/home/multipodo/Escritorio/cheef/archivo.csv', index=False)	
 	#------------------------
 	
 	#initialize params and folders
@@ -130,8 +141,6 @@ def fit(df, config):
 	header = header + "\n"
 		
 	#------------------------
-	
-	
 	
 	trees = []; alphas = []
 

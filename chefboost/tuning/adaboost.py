@@ -4,7 +4,7 @@ import numpy as np
 from chefboost.commons import functions
 from chefboost.training import Training
 
-import importlib
+import imp
 import math
 
 from tqdm import tqdm
@@ -19,8 +19,8 @@ def findPrediction(row):
 		params.append(row[j])
 		
 	moduleName = "outputs/rules/rules_%d" % (epoch)
-	fp, pathname, description = importlib.find_module(moduleName)
-	myrules = importlib.load_module(moduleName, fp, pathname, description)
+	fp, pathname, description = imp.find_module(moduleName)
+	myrules = imp.load_module(moduleName, fp, pathname, description)
 	
 	prediction = functions.sign(myrules.findDecision(params))
 	
@@ -63,8 +63,8 @@ def apply(df, config, header, dataset_features):
 		#---------------------------------------
 		
 		moduleName = "outputs/rules/rules_"+str(i)
-		fp, pathname, description = importlib.find_module(moduleName)
-		myrules = importlib.load_module(moduleName, fp, pathname, description)
+		fp, pathname, description = imp.find_module(moduleName)
+		myrules = imp.load_module(moduleName, fp, pathname, description)
 		models.append(myrules)
 		
 		#---------------------------------------
