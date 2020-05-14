@@ -13,6 +13,11 @@ from chefboost import Chefboost as chef
 config = {'algorithm': 'ID3'}
 model = chef.fit(df, config)
 
+for index, instance in df.iterrows():
+	prediction = chef.predict(model, instance)
+	actual = instance['Decision']
+	print(prediction,'vs',actual)
+
 feature = ['Sunny', 'Hot', 'High', 'Weak']
 #feature = ['Overcast','Cool','High','Weak']
 prediction = chef.predict(model, feature)

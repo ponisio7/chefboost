@@ -33,10 +33,7 @@ def to_number(df1):
     df1 = df1.astype('float32')
     return df1
 
-df=to_number(df)
-
 def isNumeric(x):
-    n=False
     try:
         numero = float(x)
         n=True
@@ -55,6 +52,9 @@ def features(feature1):
 
     return feature_
 
+df=to_number(df)
+df2 = df.copy()
+
 #Regression
 from chefboost import Chefboost as chef
 config = {'algorithm': 'Regression'}
@@ -64,5 +64,15 @@ feature_=['Overcast','Cool','Normal','Strong']
 feature = features(feature_)
 
 prediction = chef.predict(model, feature)
-print(feature_,antidiccionario[df.columns[len(df.columns)-1]][str(round(prediction))])
+print(feature_,antidiccionario[df2.columns[len(df2.columns)-1]][str(round(prediction))])
+count=0
+for index, instance in df2.iterrows():
 
+    feature = features(instance)
+    #print(index, feature)
+    prediction = antidiccionario[df2.columns[len(df2.columns)-1]][str(round(chef.predict(model, feature)))]
+    actual = antidiccionario[df2.columns[len(df2.columns)-1]][str(round(float(instance['Decision'])))]
+    print(index+1,'\tActual:', actual,'\t- \tPredict',prediction,'\tmatch: ', prediction==actual)
+    if(prediction==actual):
+        count+=1
+print('success',str(round(count/df.shape[0]*100,2)))
