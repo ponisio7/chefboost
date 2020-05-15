@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv("/home/multipodo/Escritorio/cheef/play.csv")
+df = pd.read_csv("/home/multipodo/bkpchristian/cheef/iris.csv")
 columna = [lista for lista in df.columns]
 columna.remove(columna[len(columna) - 1])
 columna.append('Decision')
@@ -59,8 +59,8 @@ df2 = df.copy()
 from chefboost import Chefboost as chef
 config = {'algorithm': 'Regression'}
 model = chef.fit(df, config)
-feature_=['Overcast','Cool','Normal','Strong']
-#feature_=[1,2,3,4]
+#feature_=['Overcast','Cool','Normal','Strong']
+feature_=[1,2,3,4]
 feature = features(feature_)
 
 prediction = chef.predict(model, feature)
@@ -75,4 +75,4 @@ for index, instance in df2.iterrows():
     print(index+1,'\tActual:', actual,'\t- \tPredict',prediction,'\tmatch: ', prediction==actual)
     if(prediction==actual):
         count+=1
-print('success',str(round(count/df.shape[0]*100,2)))
+print('match',str(round(count/df.shape[0]*100,2)))
